@@ -1,0 +1,131 @@
+
+<!DOCTYPE html>
+<html lang="tg">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script src="../js/three.js"></script>
+    <style type="text/css">
+        body{
+        margin: 0;
+        padding: 0;
+        overflow: hidden;    
+    }
+    </style>
+</head>
+<body>
+
+<script>
+    var scene, camera, render;
+    var sphere_geometry, sphere_material, sphere;
+    var container;
+
+    container =document.createElement('div');
+    document.body.appendChild(container);
+
+    camera = new THREE.PerspectiveCamera(65,window.innerWidth/window.innerHeight,0.1,10000);
+    camera.position.x = 0;
+    camera.position.y = 0;
+    camera.position.z = 8000;
+
+    scene = new THREE.Scene();
+
+    //STARS
+    var cube_geometry = new THREE.BoxGeometry( 20, 20, 20 );
+	var cub_texture = new THREE.MeshNormalMaterial( { color: 0x7fffb7} );
+	var group = new THREE.Object3D();
+
+    for (var i=0;i<10000;i++){
+        cube = new THREE.Mesh( cube_geometry, cub_texture );
+        cube.position.x=Math.random()*20000-10000;
+        cube.position.y=Math.random()*10000-5000;
+        cube.position.z=Math.random()*50000-50000;
+        cube.rotation.z=Math.random()*360-180/Math.PI;
+        group.add(cube);
+    }
+    scene.add(group);
+
+    //SUN
+    sun_geometry = new THREE.SphereGeometry(1000,20,20);
+    sun_material = new THREE.MeshBasicMaterial({color: 0xff0000, wireframe: true});
+    sun = new THREE.Mesh(sun_geometry, sun_material);
+
+    //JUPITER
+    jupiter_geometry = new THREE.SphereGeometry(400,10,10);
+    jupiter_material = new THREE.MeshBasicMaterial({color: 0xe4f5e, wireframe: true});
+    jupiter = new THREE.Mesh(jupiter_geometry, jupiter_material);
+    jupiter.position.x = -2000;
+    jupiter.position.y = 0;
+    jupiter.position.z = 0;
+
+    //EARTH
+    earth_geometry = new THREE.SphereGeometry(300,10,10);
+    earth_material = new THREE.MeshBasicMaterial({color: 0xff4024, wireframe: true});
+    earth = new THREE.Mesh(earth_geometry, earth_material);
+    earth.position.x = -3000;
+    earth.position.y = 0;
+    earth.position.z = 0;
+
+    //MARS
+    mars_geometry = new THREE.SphereGeometry(200,10,10);
+    mars_material = new THREE.MeshBasicMaterial({color: 0xff4024, wireframe: true});
+    mars = new THREE.Mesh(mars_geometry, mars_material);
+    mars.position.x = -3800;
+    mars.position.y = 0;
+    mars.position.z = 0;
+
+    //planet
+    planet_geometry = new THREE.SphereGeometry(250,10,10);
+    planet_material = new THREE.MeshBasicMaterial({color: 0xff4024, wireframe: true});
+    planet = new THREE.Mesh(planet_geometry, planet_material);
+    planet.position.x = -4400;
+    planet.position.y = 0;
+    planet.position.z = 0;
+
+    scene.add(sun);
+    scene.add(jupiter);
+    scene.add(earth);
+    scene.add(mars);
+    scene.add(planet);
+
+    render = new THREE.WebGLRenderer();
+    render.setSize(window.innerWidth,window.innerHeight);
+    container.appendChild(render.domElement);
+
+    var angle_jupiter = 0,
+        angle_earth = 0,
+        angle_mars = 0,
+        angle_planet = 0;
+
+    animate();
+
+    function animate(){
+        requestAnimationFrame(animate);
+        sun.rotation.y-=0.01;
+
+        jupiter.rotation.y-=0.01;
+        jupiter.position.x+=35*Math.sin(angle_jupiter);
+        jupiter.position.y+=35*Math.cos(angle_jupiter);
+        angle_jupiter+=Math.PI/180;
+
+        earth.rotation.y-=0.01;
+        earth.position.x+=25*Math.sin(angle_earth);
+        earth.position.y+=25*Math.cos(angle_earth);
+        angle_earth+=Math.PI/180/2;
+
+        mars.rotation.y-=0.01;
+        mars.position.x+=21*Math.sin(angle_mars);
+        mars.position.y+=21*Math.cos(angle_mars);
+        angle_mars+=Math.PI/180/3;
+
+        planet.rotation.y-=0.01;
+        planet.position.x+=25.5*Math.sin(angle_planet);
+        planet.position.y+=15*Math.cos(angle_planet);
+        angle_planet+=Math.PI/180/2;
+        
+        render.render(scene,camera);
+    }
+</script>
+
+</body>
+</html>

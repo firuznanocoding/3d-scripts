@@ -1,0 +1,66 @@
+
+<!DOCTYPE html>
+<html lang="tg">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script src="../js/three.js"></script>
+    <style type="text/css">
+        body{
+        margin: 0;
+        padding: 0;
+        overflow: hidden;    
+    }
+    </style>
+</head>
+<body>
+    <script type="text/javascript">
+      var scene, camera, renderer;
+var geometry, material, mesh;
+
+window.onload = init();
+animation();
+
+
+function init() {
+
+	scene = new THREE.Scene();
+
+	camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.1, 10000 );
+    camera.position.y = 0;
+    camera.position.z = 600;
+
+	var cube_geometry = new THREE.BoxGeometry( 20, 20, 20 );
+	var cub_texture = new THREE.MeshNormalMaterial( { color: 0x7fffb7} );
+	var group = new THREE.Object3D();
+
+    for (var i=0;i<5000;i++){
+        cube = new THREE.Mesh( cube_geometry, cub_texture );
+        cube.position.x=Math.random()*12000-6000;
+        //cube.rotation.x=Math.random()*700-350;
+        cube.position.y=Math.random()*7000-3500;
+        //cube.rotation.y=Math.random()*700-350;
+        cube.position.z=Math.random()*50000-50000;
+        cube.rotation.z=Math.random()*360-180/Math.PI;
+        group.add(cube);
+    }
+    scene.add(group);
+
+	renderer = new THREE.WebGLRenderer();
+	renderer.setSize( window.innerWidth, window.innerHeight );
+
+	document.body.appendChild( renderer.domElement );
+
+}
+
+    function animation(){
+        requestAnimationFrame(animation);
+        camera.position.z-=10;
+	    renderer.render( scene, camera );
+    }
+
+
+    </script>
+</body>
+
+</html>
